@@ -1,4 +1,7 @@
+
 # STM32 Thrust Vector Control (TVC) Flight Computer
+<img width="1000" height="389" alt="PJNtvc" src="https://github.com/user-attachments/assets/e28ca86e-9b2e-4a22-a99e-af334ef1f1f6" />
+
 
 ## 1. Overview
 
