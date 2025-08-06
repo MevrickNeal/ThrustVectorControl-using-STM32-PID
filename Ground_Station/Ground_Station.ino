@@ -1,3 +1,21 @@
+/*
+Project: Project NEAL - Ground Station
+Author: LIAN MOLLICK NEHAL
+Date: August 7, 2025
+Description: This code runs on an Arduino Nano to create a ground
+station for a model rocket. It displays a startup
+intro, monitors a DHT22 sensor, and shows a
+launch countdown on an SSD1306 OLED display.
+The countdown is triggered by sending 'l' over
+the serial monitor. */
+
+//Wiring:
+
+//SSD1306 SCL: Pin A5
+//SSD1306 SDA: Pin A4
+//DHT22 Data: Pin D2
+//Status LED: Pin D6
+//=================================================================//
 // =================================================================
 //                    LIBRARIES & DEFINITIONS
 // =================================================================
