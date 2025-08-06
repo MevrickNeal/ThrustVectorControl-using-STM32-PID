@@ -1,9 +1,3 @@
-# ThrustVectorControl-using-STM32-PID
-A Thrust Vector Control flight computer based on the STM32 Blue Pill.
-Here is the remodeled `README.md` without any emojis, keeping it clean and professional:
-
----
-
 # STM32 Thrust Vector Control (TVC) Flight Computer
 
 ## 1. Overview
