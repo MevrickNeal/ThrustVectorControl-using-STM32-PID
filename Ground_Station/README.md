@@ -110,11 +110,7 @@ roll,pitch,altitude,temp,pressure,net_accel,velocity
 -5.72,10.15,123.45,28.50,1004.20,10.50,5.21
 ```
 
----
 
-I can merge this README with the **STM32 Flight Computer README** into a **single, structured “Project NEAL” repository README** so it looks like one unified project with both airborne and ground systems documented together — including a table of contents, schematic placeholders, and build instructions.
-
-Do you want me to do that so it looks like a professional aerospace systems repo?
 
 https://wokwi.com/projects/438572296306581505
 for simulation learning
