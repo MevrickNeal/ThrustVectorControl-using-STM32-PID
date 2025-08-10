@@ -1,5 +1,6 @@
 
 # Project NEAL – STM32 TVC Flight Computer
+<img width="1000" height="389" alt="PJNtvc" src="https://github.com/user-attachments/assets/8b4568ba-5474-4956-b44a-8632b4037b5c" />
 
 **Project NEAL** is an STM32-based thrust vector control (TVC) flight computer designed for small-scale rocketry.
 The system integrates sensing, control algorithms, actuation, telemetry, and optional data logging into one compact and reliable unit.
