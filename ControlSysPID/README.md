@@ -1,170 +1,109 @@
-Project NEAL - STM32 TVC Flight Computer
-This document details the hardware, software, and functionality of the STM32-based Thrust Vector Control (TVC) flight computer.
 
-1. Project Overview
-The primary goal of this system is to serve as the "brain" for a model rocket with active thrust vector control. It is a complete, self-contained unit responsible for:
+# Project NEAL – STM32 TVC Flight Computer
 
-Sensing: Reading the rocket's orientation (Roll & Pitch) and atmospheric data (Altitude, Pressure, Temperature).
+**Project NEAL** is an STM32-based thrust vector control (TVC) flight computer designed for small-scale rocketry.
+The system integrates sensing, control algorithms, actuation, telemetry, and optional data logging into one compact and reliable unit.
 
-Stabilizing: Calculating the necessary adjustments to maintain a stable, vertical flight path using a PID control loop.
+---
 
-Actuating: Commanding two servos connected to a TVC mount to correct any deviations from the desired flight path.
+## 1. Project Overview
 
-Transmitting: Sending a continuous stream of flight data (telemetry) to a ground station via a LoRa radio module.
+The TVC flight computer performs the following functions:
 
-Logging: Recording all flight data to an onboard SD card to act as a "black box" flight recorder.
+* **Sensing**
 
-2. System Status
-This section outlines the current implementation status of all hardware components.
+  * Measures rocket orientation (Roll & Pitch) using an IMU.
+  * Reads altitude, pressure, and temperature from a barometric sensor.
 
-Actively Used Components:
-STM32 Blue Pill (F103C8): The main processor running the control loop.
+* **Stabilizing**
 
-MPU6050: Provides raw acceleration and gyroscope data, which is fused by a Kalman filter to get stable Roll and Pitch angles.
+  * Runs a PID control loop to maintain vertical stability.
 
-BME280: Provides altitude, temperature, and pressure readings.
+* **Actuating**
 
-MG90 Servos (x2): Actively controlled by the PID loop to adjust the TVC mount.
+  * Commands two MG90 servos on a TVC gimbal to correct deviations.
 
-LoRa-02 Module: Actively transmits a full telemetry packet 10 times per second.
+* **Transmitting**
 
-Bypassed / Optional Components:
-SD Card Reader: The code includes full support for the SD card reader. However, the system is designed to be fault-tolerant. If an SD card is not detected at startup, the system will print a warning and continue to function perfectly without data logging. This allows for testing without requiring a card to be present.
+  * Sends live telemetry to a ground station via LoRa at 10 Hz.
 
-GPS Module (NEO-6M): This component was part of the original plan but was lost. The current code does not include any GPS functionality. It can be added back in the future if a new module is acquired.
+* **Logging**
 
-3. Hardware & Pin Diagram
-All components are wired to the STM32 Blue Pill as follows.
+  * Records flight data to an SD card (if installed) for post-flight analysis.
 
-I2C Bus (Sensors)
-Pins: PB7 (SDA), PB6 (SCL)
+---
 
-Devices: MPU6050, BME280
+## 2. System Status
 
-Sensor
+### Actively Used Components
 
-VCC Pin
+| Component                | Description                                  |
+| ------------------------ | -------------------------------------------- |
+| STM32 Blue Pill (F103C8) | Main processor and control loop              |
+| MPU6050                  | IMU providing Roll & Pitch via Kalman filter |
+| BME280                   | Altitude, temperature, and pressure sensor   |
+| MG90 Servos (x2)         | TVC gimbal actuation                         |
+| LoRa-02 Module           | Telemetry transmission                       |
 
-GND Pin
+### Optional / Not Installed
 
-SDA Pin
+| Component         | Description                                       |
+| ----------------- | ------------------------------------------------- |
+| SD Card Reader    | Fully supported in code; bypassed if not detected |
+| NEO-6M GPS Module | Removed due to loss; code excludes GPS functions  |
 
-SCL Pin
+---
 
-MPU6050
+## 3. Hardware and Pin Mapping
 
-3.3V
+### I²C Bus – Sensors
 
-GND
+| Device  | VCC  | GND | SDA | SCL |
+| ------- | ---- | --- | --- | --- |
+| MPU6050 | 3.3V | GND | PB7 | PB6 |
+| BME280  | 3.3V | GND | PB7 | PB6 |
 
-PB7
+### SPI Bus – Communications and Storage
 
-PB6
+| Device    | VCC  | GND | SCK (PA5) | MISO (PA6) | MOSI (PA7) | CS/NSS |
+| --------- | ---- | --- | --------- | ---------- | ---------- | ------ |
+| LoRa-02   | 3.3V | GND | PA5       | PA6        | PA7        | PA4    |
+| SD Reader | 3.3V | GND | PA5       | PA6        | PA7        | PB0    |
 
-BME280
+### Individual Pins
 
-3.3V
+| Component             | Pin | Purpose                |
+| --------------------- | --- | ---------------------- |
+| LoRa Reset            | PA3 | Reset signal           |
+| LoRa Interrupt (DIO0) | PA2 | Interrupt signal       |
+| Servo X               | PA0 | PWM control for X-axis |
+| Servo Y               | PA1 | PWM control for Y-axis |
 
-GND
+**Power Notes:**
 
-PB7
+* STM32, MPU6050, BME280, and LoRa module are powered from the STM32’s 3.3V output.
+* MG90 servos are powered from an external 5V source (e.g., 4×AA battery pack).
+* A common ground must be shared between the STM32 and the servo power source.
 
-PB6
+---
 
-SPI Bus (Communications & Storage)
-Pins: PA5 (SCK), PA6 (MISO), PA7 (MOSI)
+## 4. Software Dependencies
 
-Devices: LoRa Module, SD Card Reader
+The following Arduino IDE libraries are required:
 
-Module
+* Adafruit MPU6050
+* Adafruit BME280 Library
+* Adafruit Unified Sensor (dependency)
+* PID by Brett Beauregard
+* LoRa by Sandeep Mistry
+* SD (bundled with STM32 board package)
 
-VCC Pin
+---
 
-GND Pin
+## 5. Future Development
 
-SCK
+* Reintroduce GPS tracking capability.
+* Optimize telemetry packet structure for efficiency.
+* Implement flight mode switching for autonomous testing.
 
-MISO
 
-MOSI
-
-CS/NSS
-
-LoRa-02
-
-3.3V
-
-GND
-
-PA5
-
-PA6
-
-PA7
-
-PA4
-
-SD Reader
-
-3.3V
-
-GND
-
-PA5
-
-PA6
-
-PA7
-
-PB0
-
-Individual Pins
-Component
-
-Pin
-
-Purpose
-
-LoRa Reset
-
-PA3
-
-Reset Pin
-
-LoRa Interrupt
-
-PA2
-
-Interrupt Pin (DIO0)
-
-Servo X
-
-PA0
-
-PWM Signal for X-axis
-
-Servo Y
-
-PA1
-
-PWM Signal for Y-axis
-
-CRITICAL: Power Connections
-The STM32, MPU6050, BME280, and LoRa module are all powered from the 3.3V output of the ST-Link programmer.
-
-The two MG90 servos are powered by a separate, external 5V power source (e.g., a 4xAA battery pack). The ground of this external source must be connected to a GND pin on the Blue Pill to create a common ground.
-
-4. Software Dependencies
-To compile this code, the following libraries must be installed in the Arduino IDE via the Library Manager:
-
-Adafruit MPU6050
-
-Adafruit BME280 Library
-
-Adafruit Unified Sensor (Installed as a dependency)
-
-PID by Brett Beauregard
-
-LoRa by Sandeep Mistry
-
-SD (Usually included with the STM32 board package)
