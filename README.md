@@ -57,7 +57,7 @@ This project aims to develop a **Thrust Vector Control (TVC) system** for a mode
 | --------------------- | ------------- |
 | Flight Firmware       | STM32CubeIDE  |
 | Ground Station Code   | Arduino IDE   |
-| PC Visualization      | Serial Studio |
+| PC Visualization      | HTML,CSS,THREE.JS |
 | Programming Interface | ST-Link V2    |
 
 ---
